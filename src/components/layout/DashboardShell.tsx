@@ -22,7 +22,7 @@ export function DashboardShell({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen lg:flex bg-gray-100 text-gray-800">
+    <div className="min-h-screen lg:flex bg-gray-100 text-gray-800 antialiased selection:bg-emerald-500 selection:text-white">
       <Sidebar
         role={userRole}
         isOpen={sidebarOpen}
@@ -30,12 +30,14 @@ export function DashboardShell({
         settings={settings}
       />
 
-      {sidebarOpen && (
-        <div
-          onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 z-20 bg-black/40 lg:hidden"
-        ></div>
-      )}
+      {/* Mobile overlay backdrop */}
+      <div
+        onClick={() => setSidebarOpen(false)}
+        aria-hidden="true"
+        className={`fixed inset-0 z-30 bg-black/40 backdrop-blur-xs transition-opacity duration-300 lg:hidden ${
+          sidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      />
 
       <div className="flex-1 flex flex-col min-w-0">
         <Header
@@ -44,11 +46,11 @@ export function DashboardShell({
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         />
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
+        <main className="flex-1 p-3.5 sm:p-6 lg:p-8 animate-fade-in">{children}</main>
 
-        <footer className="px-6 py-4 text-center text-xs text-gray-400 border-t border-gray-100 bg-white">
-          <div>Aplikasi Manajemen Umroh &amp; Haji Multi-Cabang</div>
-          <div className="mt-1">
+        <footer className="px-4 sm:px-6 py-4 text-center text-xs text-gray-400 border-t border-gray-200/70 bg-white">
+          <div className="text-[11px] sm:text-xs">Aplikasi Manajemen Umroh &amp; Haji Multi-Cabang</div>
+          <div className="mt-0.5 text-[11px] sm:text-xs">
             &copy; {new Date().getFullYear()}{" "}
             <span className="font-medium text-brand">Sistem Manajemen Umroh</span>
           </div>

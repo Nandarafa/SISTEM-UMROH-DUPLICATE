@@ -104,7 +104,64 @@ export default async function PaymentsPage({ searchParams }: PageProps) {
         {/* Table Content */}
         {items.length > 0 ? (
           <>
-            <div className="overflow-x-auto">
+            {/* Mobile Card List (hidden on md+) */}
+            <div className="md:hidden divide-y divide-gray-100">
+              {items.map((b, idx) => (
+                <div
+                  key={b.id}
+                  className="p-4 space-y-3 hover:bg-gray-50/80 transition-colors animate-fade-in-up"
+                  style={{ animationDelay: `${idx * 35}ms` }}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <span className="font-semibold text-gray-900 text-sm block">{b.pilgrimName}</span>
+                      <span className="text-[11px] text-gray-400 font-mono">{b.code}</span>
+                    </div>
+                    <div className="flex flex-col items-end gap-1 shrink-0">
+                      <Badge color={b.statusColor}>{b.statusLabel}</Badge>
+                      <Badge color={b.typeColor}>{b.typeLabel}</Badge>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 text-xs bg-gray-50/70 rounded-lg p-2.5">
+                    <div>
+                      <span className="text-[10px] text-gray-400 uppercase tracking-wider block">Tagihan</span>
+                      <span className="font-bold text-gray-800 text-xs block">{currency(b.amount)}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-gray-400 uppercase tracking-wider block">Dibayar</span>
+                      <span className="font-semibold text-emerald-600 text-xs block">{currency(b.paid_amount)}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-gray-400 uppercase tracking-wider block">Sisa (Outstanding)</span>
+                      <span className={`text-xs font-semibold block ${b.outstanding > 0 ? "text-red-600" : "text-gray-400"}`}>
+                        {b.outstanding > 0 ? currency(b.outstanding) : "Rp 0"}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-gray-400 uppercase tracking-wider block">Jatuh Tempo</span>
+                      <span className="text-gray-700 block">{formatDate(b.due_date)}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-1 border-t border-gray-100/60">
+                    <Link
+                      href={`/payments/${b.registration_id}`}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition active:scale-95 ${
+                        b.outstanding > 0
+                          ? "bg-teal-600 text-white hover:bg-teal-700 shadow-sm"
+                          : "border border-gray-300 text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      {b.outstanding > 0 ? "Bayar / Detail" : "Detail Tagihan"}
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table (hidden on mobile, shown on md+) */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-sm text-gray-700">
               <thead className="border-b border-gray-100 bg-gray-50/50 text-xs font-medium uppercase tracking-wider text-gray-400">
                 <tr>

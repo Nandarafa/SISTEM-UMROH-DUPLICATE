@@ -14,17 +14,17 @@ export function AgentDashboardView({ data }: AgentDashboardViewProps) {
   const { stats, monthly, paymentStatus, announcements } = data;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Page Header */}
       <div>
-        <h1 className="text-xl font-bold text-gray-800">Dashboard Agen</h1>
+        <h1 className="text-lg sm:text-xl font-bold text-gray-800">Dashboard Agen</h1>
         <p className="text-xs text-gray-400 mt-0.5">
           Ringkasan referral &amp; komisi Anda
         </p>
       </div>
 
       {/* 4 Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5 sm:gap-4">
         <StatsCard
           label="Jamaah Referral"
           value={stats.referrals.toString()}

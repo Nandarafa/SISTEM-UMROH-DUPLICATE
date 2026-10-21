@@ -138,73 +138,131 @@ export default async function DocumentsPage({ searchParams }: DocumentsPageProps
 
       {/* Table Card matching Screenshot 2 */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-xs overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-gray-600">
-            <thead className="bg-gray-50/75 text-[11px] font-semibold uppercase tracking-wider text-gray-400 border-b border-gray-100">
-              <tr>
-                <th className="px-6 py-3.5">JAMAAH</th>
-                <th className="px-6 py-3.5">CABANG</th>
-                <th className="px-6 py-3.5">KELENGKAPAN</th>
-                <th className="px-6 py-3.5">STATUS</th>
-                <th className="px-6 py-3.5 text-right"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {summaries.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="py-12 px-6 text-center text-xs text-gray-400">
-                    Belum ada data jamaah. Silakan daftarkan jamaah terlebih dahulu di menu Pendaftaran atau Jamaah.
-                  </td>
-                </tr>
-              ) : (
-                summaries.map((s) => {
-                  const percent = s.totalCount > 0 ? Math.round((s.uploadedCount / s.totalCount) * 100) : 0;
-                  return (
-                    <tr key={s.id} className="hover:bg-gray-50/60 transition">
-                      <td className="px-6 py-4 font-semibold text-gray-800 text-xs">
-                        {s.name}
-                      </td>
-                      <td className="px-6 py-4 text-gray-700">{s.branchName}</td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-28 bg-gray-100 rounded-full h-1.5 overflow-hidden">
-                            <div
-                              className="bg-[#0f766e] h-1.5 rounded-full"
-                              style={{ width: `${percent}%` }}
-                            />
+        {summaries.length === 0 ? (
+          <div className="py-12 px-6 text-center text-xs text-gray-400">
+            Belum ada data jamaah. Silakan daftarkan jamaah terlebih dahulu di menu Pendaftaran atau Jamaah.
+          </div>
+        ) : (
+          <>
+            {/* Mobile Card List (hidden on md+) */}
+            <div className="md:hidden divide-y divide-gray-100">
+              {summaries.map((s, idx) => {
+                const percent = s.totalCount > 0 ? Math.round((s.uploadedCount / s.totalCount) * 100) : 0;
+                return (
+                  <div
+                    key={s.id}
+                    className="p-4 space-y-3 hover:bg-gray-50/80 transition-colors animate-fade-in-up"
+                    style={{ animationDelay: `${idx * 35}ms` }}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="font-semibold text-gray-900 text-sm block">{s.name}</span>
+                        <span className="text-[11px] text-gray-400">{s.branchName}</span>
+                      </div>
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium shrink-0 ${
+                          s.status === "Lengkap"
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-amber-50 text-amber-700"
+                        }`}
+                      >
+                        {s.status}
+                      </span>
+                    </div>
+
+                    <div className="bg-gray-50/70 rounded-lg p-3 space-y-2">
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-500 font-medium">Kelengkapan Berkas</span>
+                        <span className="font-mono text-gray-700 font-semibold">{s.uploadedCount} / {s.totalCount} ({percent}%)</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                        <div
+                          className="bg-emerald-600 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${percent}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-end pt-1">
+                      <Link
+                        href={`/documents/${s.id}`}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-teal-50 border border-teal-200 text-teal-700 hover:bg-teal-100 transition text-xs font-semibold active:scale-95"
+                      >
+                        <span>Kelola &amp; Upload</span>
+                        <span>&rarr;</span>
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Desktop Table (hidden on mobile, shown on md+) */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-xs text-gray-600">
+                <thead className="bg-gray-50/75 text-[11px] font-semibold uppercase tracking-wider text-gray-400 border-b border-gray-100">
+                  <tr>
+                    <th className="px-6 py-3.5">JAMAAH</th>
+                    <th className="px-6 py-3.5">CABANG</th>
+                    <th className="px-6 py-3.5">KELENGKAPAN</th>
+                    <th className="px-6 py-3.5">STATUS</th>
+                    <th className="px-6 py-3.5 text-right"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {summaries.map((s, idx) => {
+                    const percent = s.totalCount > 0 ? Math.round((s.uploadedCount / s.totalCount) * 100) : 0;
+                    return (
+                      <tr
+                        key={s.id}
+                        className="hover:bg-gray-50/60 transition animate-fade-in-up"
+                        style={{ animationDelay: `${idx * 25}ms` }}
+                      >
+                        <td className="px-6 py-4 font-semibold text-gray-800 text-xs">
+                          {s.name}
+                        </td>
+                        <td className="px-6 py-4 text-gray-700">{s.branchName}</td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-28 bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                              <div
+                                className="bg-[#0f766e] h-1.5 rounded-full"
+                                style={{ width: `${percent}%` }}
+                              />
+                            </div>
+                            <span className="text-gray-400 text-[11px] font-mono">
+                              {s.uploadedCount}/{s.totalCount}
+                            </span>
                           </div>
-                          <span className="text-gray-400 text-[11px] font-mono">
-                            {s.uploadedCount}/{s.totalCount}
+                        </td>
+                        <td className="px-6 py-4">
+                          <span
+                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium ${
+                              s.status === "Lengkap"
+                                ? "bg-emerald-50 text-emerald-700"
+                                : "bg-amber-50 text-amber-700"
+                            }`}
+                          >
+                            {s.status}
                           </span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span
-                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium ${
-                            s.status === "Lengkap"
-                              ? "bg-emerald-50 text-emerald-700"
-                              : "bg-amber-50 text-amber-700"
-                          }`}
-                        >
-                          {s.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-right whitespace-nowrap">
-                        <Link
-                          href={`/documents/${s.id}`}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-teal-50 border border-teal-200 text-teal-700 hover:bg-teal-100 transition text-xs font-semibold"
-                        >
-                          <span>Kelola &amp; Upload</span>
-                          <span>&rarr;</span>
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+                        </td>
+                        <td className="px-6 py-4 text-right whitespace-nowrap">
+                          <Link
+                            href={`/documents/${s.id}`}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-teal-50 border border-teal-200 text-teal-700 hover:bg-teal-100 transition text-xs font-semibold"
+                          >
+                            <span>Kelola &amp; Upload</span>
+                            <span>&rarr;</span>
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

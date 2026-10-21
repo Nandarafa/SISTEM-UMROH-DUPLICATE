@@ -58,7 +58,87 @@ export function PilgrimTable({ pilgrims, onDeleteAction }: PilgrimTableProps) {
 
   return (
     <>
-      <div className="overflow-x-auto">
+      {/* Mobile Card List (shown on screens < md) */}
+      <div className="md:hidden divide-y divide-gray-100">
+        {items.map((p, idx) => (
+          <div
+            key={p.id}
+            className="p-4 space-y-3 hover:bg-gray-50/80 transition-colors animate-fade-in-up"
+            style={{ animationDelay: `${idx * 40}ms` }}
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <span className="font-semibold text-gray-900 text-sm block">{p.name}</span>
+                <span className="text-[11px] text-gray-400 font-mono">{p.code}</span>
+              </div>
+              <span
+                className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium shrink-0 ${
+                  p.gender === "Perempuan"
+                    ? "bg-pink-50 text-pink-700"
+                    : "bg-blue-50 text-blue-700"
+                }`}
+              >
+                {p.gender}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 text-xs text-gray-500 bg-gray-50/70 rounded-lg p-2.5">
+              <div>
+                <span className="text-[10px] text-gray-400 uppercase tracking-wider block">NIK</span>
+                <span className="font-mono text-gray-700 font-medium truncate block">{p.nik || "-"}</span>
+              </div>
+              <div>
+                <span className="text-[10px] text-gray-400 uppercase tracking-wider block">Paspor</span>
+                <span className="font-mono text-gray-700 font-medium truncate block">{p.passportNumber || "-"}</span>
+              </div>
+              <div>
+                <span className="text-[10px] text-gray-400 uppercase tracking-wider block">Kontak</span>
+                <a
+                  href={`https://wa.me/${p.phone}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-teal-600 font-medium truncate block hover:underline"
+                >
+                  {p.phone}
+                </a>
+              </div>
+              <div>
+                <span className="text-[10px] text-gray-400 uppercase tracking-wider block">Agen</span>
+                <span className="text-gray-700 truncate block">{p.agentName || "-"}</span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-1 border-t border-gray-100/60">
+              <Link
+                href={`/pilgrims/${p.id}`}
+                className="px-3 py-1.5 rounded-lg border border-gray-300 text-gray-700 text-xs font-medium hover:bg-gray-100 transition active:scale-95"
+              >
+                Lihat Detail
+              </Link>
+              <Link
+                href={`/pilgrims/${p.id}/edit`}
+                className="px-3 py-1.5 rounded-lg bg-teal-50 text-teal-700 text-xs font-medium hover:bg-teal-100 transition active:scale-95"
+              >
+                Edit
+              </Link>
+              <button
+                type="button"
+                onClick={() => confirmDelete(p)}
+                className="px-3 py-1.5 rounded-lg text-red-600 hover:bg-red-50 text-xs font-medium transition active:scale-95 flex items-center gap-1"
+              >
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 12-2h4a2 2 0 0 1 2 2v2" />
+                </svg>
+                <span>Hapus</span>
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Table (hidden on mobile, shown on md+) */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full text-left text-xs text-gray-600">
           <thead className="bg-gray-50/75 text-[11px] font-semibold uppercase tracking-wider text-gray-400 border-b border-gray-100">
             <tr>
@@ -72,8 +152,12 @@ export function PilgrimTable({ pilgrims, onDeleteAction }: PilgrimTableProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {items.map((p) => (
-              <tr key={p.id} className="hover:bg-gray-50/60 transition">
+            {items.map((p, idx) => (
+              <tr
+                key={p.id}
+                className="hover:bg-gray-50/60 transition-colors animate-fade-in-up"
+                style={{ animationDelay: `${idx * 30}ms` }}
+              >
                 <td className="px-6 py-4">
                   <span className="font-semibold text-gray-800 text-xs block">{p.name}</span>
                   <span className="text-[11px] text-gray-400 font-mono mt-0.5">{p.code}</span>

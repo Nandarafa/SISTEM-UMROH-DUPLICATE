@@ -36,15 +36,15 @@ export function PilgrimDashboardView({ data, userName = "Ahmad Fauzi" }: Pilgrim
   const pay = data.payment;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Page Header */}
       <div>
-        <h1 className="text-xl font-bold text-gray-800">Dashboard Jamaah</h1>
+        <h1 className="text-lg sm:text-xl font-bold text-gray-800">Dashboard Jamaah</h1>
         <p className="text-xs text-gray-400 mt-0.5">Selamat datang, {userName}</p>
       </div>
 
       {/* 4 Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5 sm:gap-4">
         <StatsCard
           label="Status Pendaftaran"
           value={reg?.statusLabel || "Belum Mendaftar"}

@@ -42,9 +42,14 @@ yarn-error.log*
 # local data cache / temp store
 equipment_data.json
 
-# vercel
-.vercel
+# uploads & user generated content
+/public/uploads/
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# nested duplicate repo / backup
+Sistem-Umroh-Duplicate/
+
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+*.swo

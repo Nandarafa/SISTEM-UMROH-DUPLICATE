@@ -21,10 +21,10 @@ export function AdminDashboardView({ data }: AdminDashboardViewProps) {
   } = data;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Page Header */}
       <div>
-        <h1 className="text-xl font-bold text-gray-800">Dashboard Operasional</h1>
+        <h1 className="text-lg sm:text-xl font-bold text-gray-800">Dashboard Operasional</h1>
         <p className="text-xs text-gray-400 mt-0.5">{branchName}</p>
       </div>
 

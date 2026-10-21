@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { PilgrimDocumentItem } from "@/features/documents/services/documentService";
@@ -37,26 +38,32 @@ export function DocumentUploadRow({ doc, canDeletePhoto = false }: DocumentUploa
     }
 
     setIsUploading(true);
-    const formData = new FormData();
-    formData.set("document_id", doc.id);
-    formData.set("pilgrim_id", doc.pilgrim_id);
-    formData.set("file", selectedFile);
+    try {
+      const formData = new FormData();
+      formData.set("document_id", doc.id);
+      formData.set("pilgrim_id", doc.pilgrim_id);
+      formData.set("file", selectedFile);
 
-    const res = await uploadDocumentAction(formData);
-    setIsUploading(false);
+      const res = await uploadDocumentAction(formData);
 
-    if (res?.error) {
-      alert("Gagal mengunggah berkas: " + res.error);
-    } else {
-      setPreviewUrl(res?.filePath || URL.createObjectURL(selectedFile));
-      setUploadedFileName(selectedFile.name);
-      setIsUploaded(true);
-      setIsDeleted(false);
-      setShowNotification(true);
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 4000);
-      router.refresh();
+      if (res?.error) {
+        alert("Gagal mengunggah berkas: " + res.error);
+      } else {
+        setPreviewUrl(res?.filePath || URL.createObjectURL(selectedFile));
+        setUploadedFileName(selectedFile.name);
+        setIsUploaded(true);
+        setIsDeleted(false);
+        setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+        }, 4000);
+        router.refresh();
+      }
+    } catch (err: any) {
+      console.error("Upload error:", err);
+      alert("Gagal mengunggah berkas: " + (err?.message || "Terjadi kesalahan pada server."));
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -232,33 +239,30 @@ export function DocumentUploadRow({ doc, canDeletePhoto = false }: DocumentUploa
       </tr>
 
       {/* Toast notification */}
-      {showNotification && (
-        <tr>
-          <td colSpan={4} className="p-0 border-0">
-            <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 bg-gray-900 text-white text-xs rounded-xl shadow-2xl border border-gray-800 animate-in fade-in slide-in-from-bottom-4">
-              <div className="h-6 w-6 rounded-full bg-emerald-500 text-white grid place-items-center font-bold text-xs shrink-0">
-                ✓
-              </div>
-              <div>
-                <p className="font-semibold text-gray-100">Berkas Berhasil Diunggah</p>
-                <p className="text-gray-400 text-[11px] mt-0.5">
-                  Berkas <span className="text-white font-medium">{uploadedFileName}</span> telah tersimpan.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowNotification(false)}
-                className="ml-2 text-gray-400 hover:text-white text-sm"
-              >
-                &times;
-              </button>
-            </div>
-          </td>
-        </tr>
+      {showNotification && typeof document !== "undefined" && createPortal(
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 bg-gray-900 text-white text-xs rounded-xl shadow-2xl border border-gray-800 animate-in fade-in slide-in-from-bottom-4">
+          <div className="h-6 w-6 rounded-full bg-emerald-500 text-white grid place-items-center font-bold text-xs shrink-0">
+            ✓
+          </div>
+          <div>
+            <p className="font-semibold text-gray-100">Berkas Berhasil Diunggah</p>
+            <p className="text-gray-400 text-[11px] mt-0.5">
+              Berkas <span className="text-white font-medium">{uploadedFileName}</span> telah tersimpan.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowNotification(false)}
+            className="ml-2 text-gray-400 hover:text-white text-sm"
+          >
+            &times;
+          </button>
+        </div>,
+        document.body
       )}
 
       {/* Modal Preview Berkas */}
-      {showPreviewModal && previewUrl && (
+      {showPreviewModal && previewUrl && typeof document !== "undefined" && createPortal(
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
           <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-gray-100">
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
@@ -312,7 +316,8 @@ export function DocumentUploadRow({ doc, canDeletePhoto = false }: DocumentUploa
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

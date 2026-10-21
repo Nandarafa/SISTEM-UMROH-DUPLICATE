@@ -99,30 +99,64 @@
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.25s ease-out both;
+  animation: fadeIn 0.3s ease-out both;
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .animate-pulse-subtle {
   animation: pulseSubtle 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .stagger-1 {
-  animation-delay: 50ms;
+  animation-delay: 40ms;
 }
 
 .stagger-2 {
-  animation-delay: 100ms;
+  animation-delay: 80ms;
 }
 
 .stagger-3 {
-  animation-delay: 150ms;
+  animation-delay: 120ms;
 }
 
 .stagger-4 {
+  animation-delay: 160ms;
+}
+
+.stagger-5 {
   animation-delay: 200ms;
 }
 
@@ -139,30 +173,59 @@
 
 /* Minimalist card micro-lift */
 .card-subtle {
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.22s ease;
 }
 
 .card-subtle:hover {
   transform: translateY(-2px);
-  border-color: #94a3b8;
-  box-shadow: 0 6px 18px -4px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
+  border-color: #cbd5e1;
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.06), 0 2px 6px -2px rgba(0, 0, 0, 0.03);
 }
 
 .btn-subtle {
   transition: transform 0.12s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.btn-subtle:hover {
+  transform: translateY(-1px);
+}
+
 .btn-subtle:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 .table-row-hover {
-  transition: background-color 0.1s ease;
+  transition: background-color 0.12s ease, transform 0.12s ease;
 }
 
 .table-row-hover:hover {
   background-color: #f8fafc;
 }
+
+/* Custom sleek mobile-friendly scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Safe smooth bottom bar for mobile nav */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 1rem);
+}
+
 
 
 

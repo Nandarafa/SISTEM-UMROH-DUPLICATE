@@ -63,19 +63,32 @@ export function Sidebar({ role, isOpen, onClose, settings }: SidebarProps) {
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform lg:translate-x-0 lg:static lg:inset-0 ${
+      className={`fixed inset-y-0 left-0 z-40 w-72 sm:w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none lg:translate-x-0 lg:static lg:inset-0 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
       {/* Brand */}
-      <div className="h-16 flex items-center gap-3 px-5 border-b border-gray-100">
-        <div className="h-9 w-9 rounded-lg bg-[#0d9488] text-white grid place-items-center font-bold text-sm shrink-0">
-          {initials}
+      <div className="h-16 flex items-center justify-between px-5 border-b border-gray-100">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="h-9 w-9 rounded-lg bg-[#0d9488] text-white grid place-items-center font-bold text-sm shrink-0 shadow-sm">
+            {initials}
+          </div>
+          <div className="min-w-0">
+            <p className="font-semibold text-gray-800 text-sm truncate">{appName}</p>
+            <p className="text-[11px] text-gray-400 truncate">{appSubtitle}</p>
+          </div>
         </div>
-        <div className="min-w-0">
-          <p className="font-semibold text-gray-800 text-sm truncate">{appName}</p>
-          <p className="text-[11px] text-gray-400 truncate">{appSubtitle}</p>
-        </div>
+        <button
+          onClick={onClose}
+          type="button"
+          aria-label="Tutup menu"
+          className="lg:hidden p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"
+        >
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
